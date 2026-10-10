@@ -1,0 +1,436 @@
+{
+  "users": [
+    {
+      "id": "usr_admin_1",
+      "full_name": "Universal Admin",
+      "email": "admin@universalsportstip.com",
+      "phone": "+1 800-555-0199",
+      "password_hash": "admin12345",
+      "role": "super_admin",
+      "account_status": "active",
+      "created_at": "2026-10-10T01:03:02.459Z",
+      "updated_at": "2026-10-10T01:03:02.459Z"
+    },
+    {
+      "id": "usr_demo_customer",
+      "full_name": "Alex Mercer",
+      "email": "alex.mercer@example.com",
+      "phone": "+1 555-234-5678",
+      "password_hash": "customer123",
+      "role": "customer",
+      "account_status": "active",
+      "created_at": "2026-10-10T01:03:02.459Z",
+      "updated_at": "2026-10-10T01:03:02.459Z"
+    },
+    {
+      "id": "usr_1791594672070",
+      "full_name": "Jason Aaron",
+      "email": "aaronjason57578@gmail.com",
+      "phone": "+19995234636",
+      "password_hash": "temp_secret",
+      "role": "customer",
+      "account_status": "active",
+      "created_at": "2026-10-10T01:11:12.070Z",
+      "updated_at": "2026-10-10T01:11:12.070Z"
+    },
+    {
+      "id": "usr_1791626058594",
+      "full_name": "Jason Test",
+      "email": "test@example.com",
+      "phone": "+15551234567",
+      "password_hash": "temp_secret",
+      "role": "customer",
+      "account_status": "active",
+      "created_at": "2026-10-10T09:54:18.594Z",
+      "updated_at": "2026-10-10T09:54:18.594Z"
+    }
+  ],
+  "card_requests": [
+    {
+      "id": "req_1791594672070_6ca3",
+      "request_id": "UST-CARD-Q07LAZ",
+      "user_id": "usr_1791594672070",
+      "card_network": "mastercard",
+      "cardholder_name": "AARON",
+      "simulated_card_number": "5412 8492 1039 8201",
+      "simulated_expiry": "12/29",
+      "request_status": "Pending Review",
+      "payment_status": "Unpaid",
+      "design_version_id": "des_v1",
+      "submitted_at": "2026-10-10T01:11:12.070Z",
+      "created_at": "2026-10-10T01:11:12.070Z",
+      "updated_at": "2026-10-10T01:11:12.070Z"
+    },
+    {
+      "id": "req_seed_1",
+      "request_id": "UST-CARD-000101",
+      "user_id": "usr_demo_customer",
+      "card_network": "visa",
+      "cardholder_name": "ALEX MERCER",
+      "simulated_card_number": "4892 8492 1039 9210",
+      "simulated_expiry": "10/29",
+      "request_status": "Dispatched",
+      "payment_status": "Paid",
+      "design_version_id": "des_v1",
+      "approved_by": "Universal Admin",
+      "approved_at": "2026-10-08T01:03:02.459Z",
+      "submitted_at": "2026-10-07T01:03:02.459Z",
+      "created_at": "2026-10-07T01:03:02.459Z",
+      "updated_at": "2026-10-10T01:03:02.459Z"
+    }
+  ],
+  "addresses": [
+    {
+      "id": "addr_seed_1",
+      "request_id": "req_seed_1",
+      "address_line_1": "742 Evergreen Terrace",
+      "address_line_2": "Suite 4B",
+      "city": "Springfield",
+      "state_region": "Oregon",
+      "country": "United States",
+      "postal_code": "97477",
+      "delivery_phone": "+1 555-234-5678",
+      "created_at": "2026-10-10T01:03:02.459Z",
+      "updated_at": "2026-10-10T01:03:02.459Z"
+    },
+    {
+      "id": "addr_1791594672070",
+      "request_id": "req_1791594672070_6ca3",
+      "address_line_1": "North carolina",
+      "address_line_2": "768 Johnson street",
+      "city": "California",
+      "state_region": "Oregon",
+      "country": "United States",
+      "postal_code": "10907",
+      "delivery_phone": "+19995234636",
+      "created_at": "2026-10-10T01:11:12.070Z",
+      "updated_at": "2026-10-10T01:11:12.070Z"
+    }
+  ],
+  "card_designs": [
+    {
+      "id": "des_v1",
+      "design_name": "Master Blue Abstract v1.0",
+      "card_network": "all",
+      "dynamic_field_configuration": {
+        "name_x": 8,
+        "name_y": 80,
+        "name_font_size": 14,
+        "name_color": "#FFFFFF",
+        "number_x": 8,
+        "number_y": 64,
+        "expiry_x": 62,
+        "expiry_y": 80,
+        "chip_x": 8,
+        "chip_y": 30,
+        "logo_x": 78,
+        "logo_y": 74
+      },
+      "version_number": 1,
+      "is_active": true,
+      "created_by": "Universal Admin",
+      "created_at": "2026-10-10T01:03:02.459Z",
+      "updated_at": "2026-10-10T01:03:02.459Z"
+    }
+  ],
+  "pricing": [
+    {
+      "id": "price_1",
+      "service_name": "Card Production",
+      "description": "High-precision sports tip physical card manufacturing and micro-engraving",
+      "amount": 45,
+      "currency": "USD",
+      "is_enabled": true,
+      "created_by": "admin",
+      "updated_by": "admin",
+      "created_at": "2026-10-10T01:03:02.459Z",
+      "updated_at": "2026-10-10T01:03:02.459Z"
+    },
+    {
+      "id": "price_2",
+      "service_name": "Delivery",
+      "description": "Secure tracked express courier delivery with signature confirmation",
+      "amount": 15,
+      "currency": "USD",
+      "is_enabled": true,
+      "created_by": "admin",
+      "updated_by": "admin",
+      "created_at": "2026-10-10T01:03:02.459Z",
+      "updated_at": "2026-10-10T01:03:02.459Z"
+    },
+    {
+      "id": "price_3",
+      "service_name": "Maintenance",
+      "description": "Annual network directory synchronization & card status maintenance",
+      "amount": 10,
+      "currency": "USD",
+      "is_enabled": true,
+      "created_by": "admin",
+      "updated_by": "admin",
+      "created_at": "2026-10-10T01:03:02.459Z",
+      "updated_at": "2026-10-10T01:03:02.459Z"
+    },
+    {
+      "id": "price_4",
+      "service_name": "Tracking",
+      "description": "Priority SMS and email real-time shipment milestone notifications",
+      "amount": 5,
+      "currency": "USD",
+      "is_enabled": true,
+      "created_by": "admin",
+      "updated_by": "admin",
+      "created_at": "2026-10-10T01:03:02.459Z",
+      "updated_at": "2026-10-10T01:03:02.459Z"
+    }
+  ],
+  "payment_quotes": [
+    {
+      "id": "quote_seed_1",
+      "request_id": "req_seed_1",
+      "currency": "USD",
+      "subtotal": 75,
+      "total": 75,
+      "price_snapshot": [
+        {
+          "service_name": "Card Production",
+          "description": "Card manufacturing",
+          "amount": 45
+        },
+        {
+          "service_name": "Delivery",
+          "description": "Tracked delivery",
+          "amount": 15
+        },
+        {
+          "service_name": "Maintenance",
+          "description": "Network maintenance",
+          "amount": 10
+        },
+        {
+          "service_name": "Tracking",
+          "description": "SMS updates",
+          "amount": 5
+        }
+      ],
+      "status": "completed",
+      "expires_at": "2026-10-17T01:03:02.459Z",
+      "created_at": "2026-10-10T01:03:02.459Z"
+    },
+    {
+      "id": "quote_1791594672070",
+      "request_id": "req_1791594672070_6ca3",
+      "currency": "USD",
+      "subtotal": 75,
+      "total": 75,
+      "price_snapshot": [
+        {
+          "service_name": "Card Production",
+          "description": "High-precision sports tip physical card manufacturing and micro-engraving",
+          "amount": 45
+        },
+        {
+          "service_name": "Delivery",
+          "description": "Secure tracked express courier delivery with signature confirmation",
+          "amount": 15
+        },
+        {
+          "service_name": "Maintenance",
+          "description": "Annual network directory synchronization & card status maintenance",
+          "amount": 10
+        },
+        {
+          "service_name": "Tracking",
+          "description": "Priority SMS and email real-time shipment milestone notifications",
+          "amount": 5
+        }
+      ],
+      "status": "active",
+      "expires_at": "2026-10-17T01:11:12.070Z",
+      "created_at": "2026-10-10T01:11:12.070Z"
+    }
+  ],
+  "payments": [
+    {
+      "id": "pay_seed_1",
+      "request_id": "req_seed_1",
+      "quote_id": "quote_seed_1",
+      "provider": "Universal Pay Sandbox",
+      "provider_transaction_reference": "UST-TXN-984210A",
+      "amount": 75,
+      "currency": "USD",
+      "status": "Paid",
+      "verified_at": "2026-10-08T01:03:02.459Z",
+      "created_at": "2026-10-10T01:03:02.459Z",
+      "updated_at": "2026-10-10T01:03:02.459Z"
+    }
+  ],
+  "shipments": [
+    {
+      "id": "ship_seed_1",
+      "shipment_id": "UST-SHIP-1001",
+      "request_id": "req_seed_1",
+      "tracking_id": "UST-TRK-8F42K9",
+      "courier_name": "Apex Priority Express",
+      "courier_reference": "APX-99482-US",
+      "destination_summary": "Springfield, OR, United States",
+      "current_status": "In Transit",
+      "dispatched_at": "2026-10-09T01:03:02.459Z",
+      "estimated_delivery": "10/12/2026",
+      "created_at": "2026-10-10T01:03:02.459Z",
+      "updated_at": "2026-10-10T01:03:02.459Z"
+    }
+  ],
+  "tracking_events": [
+    {
+      "id": "evt_1",
+      "shipment_id": "ship_seed_1",
+      "status": "Request Received",
+      "location": "Universal Sports Tip Central",
+      "description": "Card issuance request registered and verified in core system.",
+      "event_at": "2026-10-07T01:03:02.487Z",
+      "created_by": "System",
+      "created_at": "2026-10-10T01:03:02.459Z"
+    },
+    {
+      "id": "evt_2",
+      "shipment_id": "ship_seed_1",
+      "status": "Card Approved",
+      "location": "Compliance Desk, London Facility",
+      "description": "Customer application vetted and cleared for high-spec manufacturing.",
+      "event_at": "2026-10-07T13:03:02.487Z",
+      "created_by": "Universal Admin",
+      "created_at": "2026-10-10T01:03:02.459Z"
+    },
+    {
+      "id": "evt_3",
+      "shipment_id": "ship_seed_1",
+      "status": "Card Printed",
+      "location": "Secure Production Lab #3",
+      "description": "Master Blue Abstract card micro-printed, contactless chip encoded, and quality audited.",
+      "event_at": "2026-10-08T01:03:02.487Z",
+      "created_by": "Ops Team",
+      "created_at": "2026-10-10T01:03:02.459Z"
+    },
+    {
+      "id": "evt_4",
+      "shipment_id": "ship_seed_1",
+      "status": "Dispatched",
+      "location": "Outbound Logistics Center",
+      "description": "Secure package handed over to Apex Priority Express courier.",
+      "event_at": "2026-10-09T01:03:02.487Z",
+      "created_by": "Apex Logistics",
+      "created_at": "2026-10-10T01:03:02.459Z"
+    },
+    {
+      "id": "evt_5",
+      "shipment_id": "ship_seed_1",
+      "status": "In Transit",
+      "location": "Regional Sorting Hub, Portland OR",
+      "description": "Package sorted and routed to local destination delivery hub.",
+      "event_at": "2026-10-09T20:03:02.487Z",
+      "created_by": "Apex Hub",
+      "created_at": "2026-10-10T01:03:02.459Z"
+    }
+  ],
+  "print_packages": [
+    {
+      "id": "pkg_1791596195396",
+      "request_id": "req_1791594672070_6ca3",
+      "design_version_id": "des_v1",
+      "front_file_path": "/exports/UST-CARD-Q07LAZ_front.png",
+      "back_file_path": "/exports/UST-CARD-Q07LAZ_back.png",
+      "details_pdf_path": "/exports/UST-CARD-Q07LAZ_details.pdf",
+      "generation_status": "ready",
+      "generated_by": "Universal Admin",
+      "generated_at": "2026-10-10T01:36:35.396Z"
+    }
+  ],
+  "audit_logs": [
+    {
+      "id": "log_1791626058596_6clal",
+      "actor_user_id": "usr_1791626058594",
+      "actor_name": "Notification Service",
+      "action": "EMAIL_NOTIFICATION_SENT",
+      "entity_type": "EmailNotification",
+      "entity_id": "notif_1791626058595",
+      "summary": "Sent email notification to test@example.com: Congrats! Your payout has been funded to your card",
+      "created_at": "2026-10-10T09:54:18.596Z"
+    },
+    {
+      "id": "log_1791626058595_rydxx",
+      "actor_user_id": "usr_1791626058594",
+      "actor_name": "Jason Test",
+      "action": "REQUEST_SUBMITTED",
+      "entity_type": "CardRequest",
+      "entity_id": "req_1791626058594_j92v",
+      "summary": "Submitted card request UST-CARD-VT1WCV (visa)",
+      "created_at": "2026-10-10T09:54:18.595Z"
+    },
+    {
+      "id": "log_1791621899640_6aaok",
+      "actor_user_id": "usr_admin_1",
+      "actor_name": "Universal Admin",
+      "action": "ADMIN_LOGIN",
+      "entity_type": "User",
+      "entity_id": "usr_admin_1",
+      "summary": "Admin signed in: admin@universalsportstip.com (super_admin)",
+      "created_at": "2026-10-10T08:44:59.640Z"
+    },
+    {
+      "id": "log_1791596561287_t5it1",
+      "actor_user_id": "usr_admin_1",
+      "actor_name": "Universal Admin",
+      "action": "ADMIN_LOGIN",
+      "entity_type": "User",
+      "entity_id": "usr_admin_1",
+      "summary": "Admin signed in: admin@universalsportstip.com (super_admin)",
+      "created_at": "2026-10-10T01:42:41.287Z"
+    },
+    {
+      "id": "log_1791596195396_85vt2",
+      "actor_user_id": "usr_admin_1",
+      "actor_name": "Universal Admin",
+      "action": "PRINT_PACKAGE_GENERATED",
+      "entity_type": "PrintPackage",
+      "entity_id": "pkg_1791596195396",
+      "summary": "Generated print package for UST-CARD-Q07LAZ: front.png, back.png, card-details.pdf",
+      "created_at": "2026-10-10T01:36:35.396Z"
+    },
+    {
+      "id": "log_1791594672071_jz9tg",
+      "actor_user_id": "usr_1791594672070",
+      "actor_name": "Jason Aaron",
+      "action": "REQUEST_SUBMITTED",
+      "entity_type": "CardRequest",
+      "entity_id": "req_1791594672070_6ca3",
+      "summary": "Submitted card request UST-CARD-Q07LAZ (mastercard)",
+      "created_at": "2026-10-10T01:11:12.071Z"
+    },
+    {
+      "id": "log_1",
+      "actor_user_id": "usr_admin_1",
+      "actor_name": "Universal Admin",
+      "action": "SYSTEM_INIT",
+      "entity_type": "Settings",
+      "entity_id": "global",
+      "summary": "Database initialized with master artwork profiles and security rules.",
+      "created_at": "2026-10-10T01:03:02.459Z"
+    }
+  ],
+  "settings": {
+    "id": "settings_1",
+    "platform_name": "Universal Sports Tip",
+    "watermark_enabled": true,
+    "watermark_text": "UNIVERSAL SPORTS TIP - SPECIMEN",
+    "watermark_opacity": 0.22,
+    "watermark_size": 13,
+    "watermark_position": "diagonal",
+    "support_email": "support@universalsportstip.com",
+    "support_phone": "+1 800-555-0199",
+    "default_currency": "USD",
+    "maintenance_mode": false,
+    "updated_by": "usr_admin_1",
+    "updated_at": "2026-10-10T01:03:02.459Z"
+  },
+  "notifications": []
+}

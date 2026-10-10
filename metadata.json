@@ -1,0 +1,6 @@
+{
+  "name": "Universal Sports Tip",
+  "description": "Universal Sports Tip — Premium Sports Card Personalization, Production & Tracking Platform",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
