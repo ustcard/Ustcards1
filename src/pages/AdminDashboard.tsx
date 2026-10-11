@@ -591,6 +591,44 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               </button>
             </div>
 
+            {/* Hostinger Ready Package Banner */}
+            <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-blue-950/80 via-indigo-950/60 to-slate-900 border border-blue-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xl">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-blue-500/20 text-blue-300 border border-blue-500/30">
+                    Hostinger Production Build
+                  </span>
+                  <span className="text-xs text-slate-400">Includes printable fix &amp; .htaccess</span>
+                </div>
+                <h3 className="text-base font-bold text-white font-heading">
+                  Website Deployment Package (dist.zip)
+                </h3>
+                <p className="text-xs text-slate-300 max-w-xl">
+                  Download the complete build package directly to your device, or deploy automatically via GitHub branch <code className="text-blue-300 font-mono bg-blue-950/60 px-1 py-0.5 rounded text-[11px]">hostinger-deploy</code>.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                <a
+                  href="/dist.zip"
+                  download="dist.zip"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-lg shadow-blue-600/30 transition-all cursor-pointer"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Download dist.zip</span>
+                </a>
+                <a
+                  href="https://github.com/ustcard/Ustcards1/tree/hostinger-deploy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 hover:text-white text-xs font-medium transition-colors"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  <span>View on GitHub</span>
+                </a>
+              </div>
+            </div>
+
             {/* 10 Real Statistics Cards (Requirement #14) */}
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
               <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
