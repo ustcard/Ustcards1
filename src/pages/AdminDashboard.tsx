@@ -36,7 +36,10 @@ import {
   ExternalLink,
   RefreshCw,
   Eye,
-  Archive
+  Archive,
+  Database,
+  Upload,
+  ShieldCheck
 } from 'lucide-react';
 import {
   fetchAdminData,
@@ -47,7 +50,9 @@ import {
   addTrackingEvent,
   updatePricingItem,
   updatePlatformSettings,
-  generatePrintPackageApi
+  generatePrintPackageApi,
+  exportDatabaseBackup,
+  importDatabaseBackup
 } from '../services/apiClient';
 
 interface AdminDashboardProps {
@@ -96,6 +101,42 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
   // Notifications / feedback
   const [actionAlert, setActionAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [backupLoading, setBackupLoading] = useState(false);
+  const [backupMsg, setBackupMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  const handleExportBackup = async () => {
+    try {
+      setBackupLoading(true);
+      await exportDatabaseBackup(currentUser?.id);
+      setBackupMsg({ type: 'success', text: 'Database backup downloaded successfully. All users and requests are preserved in the JSON snapshot.' });
+    } catch (e: any) {
+      setBackupMsg({ type: 'error', text: 'Failed to download backup: ' + e.message });
+    } finally {
+      setBackupLoading(false);
+    }
+  };
+
+  const handleImportBackup = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      try {
+        const content = event.target?.result as string;
+        const res = await importDatabaseBackup(content, currentUser?.id);
+        if (res.success) {
+          setBackupMsg({ type: 'success', text: res.message });
+          loadAdminData();
+        } else {
+          setBackupMsg({ type: 'error', text: res.message });
+        }
+      } catch (err: any) {
+        setBackupMsg({ type: 'error', text: 'Failed to import backup: ' + err.message });
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  };
 
   // Prevent background scroll when mobile drawer is open (Requirement #7 & #8)
   useEffect(() => {
@@ -627,6 +668,75 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   <span>View on GitHub</span>
                 </a>
               </div>
+            </div>
+
+            {/* Live Data Preservation & Backup Manager */}
+            <div className="p-4 sm:p-5 rounded-2xl bg-slate-900/90 border border-emerald-500/30 shadow-xl space-y-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
+                      <ShieldCheck className="w-3 h-3" />
+                      Zero Data Loss Safe Redeploy
+                    </span>
+                    <span className="text-xs text-slate-400">
+                      Users &amp; Requests are never wiped during redeploy
+                    </span>
+                  </div>
+                  <h3 className="text-base font-bold text-white font-heading flex items-center gap-2">
+                    <Database className="w-4 h-4 text-emerald-400" />
+                    Database Preservation &amp; Backup Manager
+                  </h3>
+                  <p className="text-xs text-slate-300 max-w-2xl leading-relaxed">
+                    When you redeploy (via <code className="text-emerald-300 font-mono text-[11px] bg-emerald-950/40 px-1 py-0.5 rounded">dist.zip</code> or GitHub), your website updates its visual design and features without altering existing user accounts or card requests. For extra peace of mind, download a complete JSON backup below or restore anytime.
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                  <button
+                    onClick={handleExportBackup}
+                    disabled={backupLoading}
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-lg shadow-emerald-600/20 transition-all cursor-pointer disabled:opacity-50"
+                  >
+                    <Download className="w-4 h-4" />
+                    <span>{backupLoading ? 'Backing up...' : 'Download Database Backup (.json)'}</span>
+                  </button>
+
+                  <label className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 hover:text-white text-xs font-medium transition-colors cursor-pointer">
+                    <Upload className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Restore from Backup</span>
+                    <input
+                      type="file"
+                      accept=".json,application/json"
+                      onChange={handleImportBackup}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+              </div>
+
+              {backupMsg && (
+                <div className={`p-3 rounded-xl border text-xs flex items-center justify-between gap-2 ${
+                  backupMsg.type === 'success'
+                    ? 'bg-emerald-950/50 border-emerald-500/40 text-emerald-200'
+                    : 'bg-rose-950/50 border-rose-500/40 text-rose-200'
+                }`}>
+                  <div className="flex items-center gap-2">
+                    {backupMsg.type === 'success' ? (
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    ) : (
+                      <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+                    )}
+                    <span>{backupMsg.text}</span>
+                  </div>
+                  <button
+                    onClick={() => setBackupMsg(null)}
+                    className="text-slate-400 hover:text-white text-xs px-1.5 py-0.5"
+                  >
+                    Dismiss
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* 10 Real Statistics Cards (Requirement #14) */}

@@ -905,3 +905,76 @@ export async function trackShipmentPublic(trackingOrRequestId: string) {
     events
   };
 }
+
+// ----------------------------------------------------
+// DATABASE PRESERVATION, EXPORT & RESTORE
+// ----------------------------------------------------
+
+export async function exportDatabaseBackup(token?: string): Promise<{ success: boolean }> {
+  // Check backend first
+  const probe = await smartFetch('/api/admin/backup', {
+    headers: token ? { Authorization: `Bearer ${token}` } : {}
+  });
+
+  let dataToExport = null;
+  if (probe.isJson && probe.status === 200 && probe.data) {
+    dataToExport = probe.data;
+  } else {
+    dataToExport = getLocalDb();
+  }
+
+  const jsonStr = JSON.stringify(dataToExport, null, 2);
+  const blob = new Blob([jsonStr], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `ustcards_database_backup_${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  return { success: true };
+}
+
+export async function importDatabaseBackup(
+  jsonString: string,
+  token?: string
+): Promise<{ success: boolean; message: string; count?: number }> {
+  try {
+    const parsed = JSON.parse(jsonString);
+    if (!parsed || typeof parsed !== 'object') {
+      return { success: false, message: 'Invalid backup file format.' };
+    }
+    if (!parsed.users && !parsed.card_requests) {
+      return { success: false, message: 'Backup file does not contain valid users or requests.' };
+    }
+
+    // Try server sync if backend is active
+    await smartFetch('/api/admin/restore', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify(parsed)
+    });
+
+    // Update local database so static browser mode is also synchronized
+    const current = getLocalDb();
+    const merged = {
+      ...current,
+      ...parsed,
+      users: parsed.users || current.users || [],
+      card_requests: parsed.card_requests || current.card_requests || []
+    };
+    saveLocalDb(merged);
+
+    return {
+      success: true,
+      message: `Database restored with ${merged.users.length} users and ${merged.card_requests.length} card requests.`
+    };
+  } catch (err: any) {
+    return { success: false, message: 'Error processing backup file: ' + err.message };
+  }
+}
+

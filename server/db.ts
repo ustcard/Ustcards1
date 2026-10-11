@@ -572,6 +572,15 @@ class Database {
     this.persist();
     return log;
   }
+
+  public getAll(): DatabaseSchema {
+    return this.data;
+  }
+
+  public restoreAll(data: DatabaseSchema) {
+    this.data = data;
+    this.persist();
+  }
 }
 
 export const db = new Database();

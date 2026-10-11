@@ -363,6 +363,13 @@ var Database = class {
     this.persist();
     return log;
   }
+  getAll() {
+    return this.data;
+  }
+  restoreAll(data) {
+    this.data = data;
+    this.persist();
+  }
 };
 var db = new Database();
 
@@ -1286,6 +1293,26 @@ apiRouter.get("/admin/audit-logs", (req, res) => {
   }
   const logs = db.get("audit_logs");
   return res.json(logs);
+});
+apiRouter.get("/admin/backup", (req, res) => {
+  const user = getAuthUser(req);
+  if (!user || user.role === "customer") {
+    return res.status(403).json({ error: "Administrative privileges required." });
+  }
+  return res.json(db.getAll());
+});
+apiRouter.post("/admin/restore", (req, res) => {
+  const user = getAuthUser(req);
+  if (!user || user.role === "customer") {
+    return res.status(403).json({ error: "Administrative privileges required." });
+  }
+  const payload = req.body;
+  if (!payload || !payload.users && !payload.card_requests) {
+    return res.status(400).json({ error: "Invalid backup file structure." });
+  }
+  db.restoreAll(payload);
+  db.logAudit(user.id, user.full_name, "DATABASE_RESTORED", "System", "database", "Admin restored database backup.");
+  return res.json({ success: true, message: "Database restored successfully." });
 });
 
 // server.ts
