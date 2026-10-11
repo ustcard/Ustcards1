@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 630" width="100%" height="100%" preserveAspectRatio="none">
+  <!-- Deep Royal Navy Blue Base -->
+  <rect width="1000" height="630" fill="#0e297a" />
+
+  <!-- Bottom-Left Slate Blue Curved Arc -->
+  <path
+    d="M 0 345 C 130 350 275 475 285 630 L 0 630 Z"
+    fill="#7088b6"
+  />
+
+  <!-- Top-Right Sweeping Curved Ribbon -->
+  <path
+    d="M 575 0 C 600 290 820 530 1000 595 L 1000 270 C 930 170 890 70 830 0 Z"
+    fill="#7088b6"
+  />
+</svg>
