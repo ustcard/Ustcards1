@@ -46,7 +46,8 @@ import {
   createShipment,
   addTrackingEvent,
   updatePricingItem,
-  updatePlatformSettings
+  updatePlatformSettings,
+  generatePrintPackageApi
 } from '../services/apiClient';
 
 interface AdminDashboardProps {
@@ -189,28 +190,19 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const handleGeneratePrintPackage = async (targetReq: any) => {
     setGeneratingPrintPkg(true);
     try {
-      // 1. Notify server
-      const res = await fetch('/api/print-packages/generate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${currentUser?.id || 'usr_admin_1'}`
-        },
-        body: JSON.stringify({ request_id: targetReq.id })
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
+      // 1. Notify server / update local DB
+      await generatePrintPackageApi(targetReq.id || targetReq.request_id, currentUser?.id);
 
       // 2. Generate actual files in browser (high-res flat canvases & PDF)
       const packageData = {
         requestId: targetReq.request_id,
-        cardholderName: targetReq.cardholder_name,
-        network: targetReq.card_network,
+        cardholderName: targetReq.cardholder_name || 'CARDHOLDER',
+        network: targetReq.card_network || 'visa',
         simulatedNumber: formatFullCardNumber(targetReq.simulated_card_number, targetReq.card_network),
-        simulatedExpiry: targetReq.simulated_expiry,
-        submissionDate: targetReq.submitted_at,
-        approvedDate: targetReq.approved_at,
-        approvedBy: targetReq.approved_by || currentUser?.full_name,
+        simulatedExpiry: targetReq.simulated_expiry || '12/29',
+        submissionDate: targetReq.submitted_at || new Date().toISOString(),
+        approvedDate: targetReq.approved_at || new Date().toISOString(),
+        approvedBy: targetReq.approved_by || currentUser?.full_name || 'Universal Admin',
         deliveryAddress: targetReq.address
       };
 
@@ -829,6 +821,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                             >
                               Details
                             </button>
+                            <button
+                              onClick={() => handleGeneratePrintPackage(reqItem)}
+                              title="Generate CR80 300DPI Print Package"
+                              className="px-2.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-medium inline-flex items-center gap-1 cursor-pointer"
+                            >
+                              <Printer className="w-3.5 h-3.5" />
+                              <span className="hidden sm:inline">Print Pkg</span>
+                            </button>
                             {reqItem.request_status === 'Pending Review' && (
                               <button
                                 onClick={() => handleApprove(reqItem.id)}
@@ -872,16 +872,25 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         </span>
                       </div>
 
-                      <div className="flex items-center justify-between pt-2 border-t border-slate-800">
+                      <div className="flex items-center justify-between pt-2 border-t border-slate-800 gap-2">
                         <span className={`text-[11px] font-medium ${reqItem.payment_status === 'Paid' ? 'text-emerald-400' : 'text-amber-400'}`}>
                           Payment: {reqItem.payment_status}
                         </span>
-                        <button
-                          onClick={() => setSelectedRequest(reqItem)}
-                          className="px-3 py-1.5 rounded-lg bg-blue-600 text-white font-semibold cursor-pointer"
-                        >
-                          Manage Request
-                        </button>
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            onClick={() => handleGeneratePrintPackage(reqItem)}
+                            className="px-2.5 py-1.5 rounded-lg bg-blue-700 hover:bg-blue-600 text-white font-semibold flex items-center gap-1 cursor-pointer text-[11px]"
+                          >
+                            <Printer className="w-3.5 h-3.5" />
+                            <span>Print</span>
+                          </button>
+                          <button
+                            onClick={() => setSelectedRequest(reqItem)}
+                            className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-semibold cursor-pointer text-[11px]"
+                          >
+                            Manage
+                          </button>
+                        </div>
                       </div>
                     </div>
                   ))}

@@ -723,6 +723,65 @@ export async function updatePlatformSettings(settingsData: any, token?: string) 
   return { success: true, settings: db.settings };
 }
 
+export async function generatePrintPackageApi(requestId: string, token?: string) {
+  const probe = await smartFetch('/api/print-packages/generate', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token || 'usr_admin_1'}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ request_id: requestId })
+  });
+
+  if (probe.isJson && probe.status === 200) {
+    return probe.data;
+  }
+
+  // Local fallback for Hostinger or offline environments
+  const db = getLocalDb();
+  const req = (db.card_requests || []).find((r: any) => r.id === requestId || r.request_id === requestId);
+  const now = new Date().toISOString();
+
+  if (req) {
+    if (req.request_status === 'Approved' || req.request_status === 'Processing') {
+      req.request_status = 'Printed';
+      req.updated_at = now;
+    }
+  }
+
+  db.print_packages = db.print_packages || [];
+  const newPkg = {
+    id: 'pkg_' + Date.now(),
+    request_id: req ? req.id : requestId,
+    design_version_id: req?.design_version_id || 'des_v1',
+    front_file_path: `/exports/${req?.request_id || requestId}_front.png`,
+    back_file_path: `/exports/${req?.request_id || requestId}_back.png`,
+    details_pdf_path: `/exports/${req?.request_id || requestId}_details.pdf`,
+    generation_status: 'ready',
+    generated_by: 'Universal Admin',
+    generated_at: now
+  };
+  db.print_packages.push(newPkg);
+
+  db.audit_logs = db.audit_logs || [];
+  db.audit_logs.push({
+    id: 'audit_' + Date.now(),
+    actor_id: 'usr_admin_1',
+    actor_name: 'Universal Admin',
+    action_type: 'PRINT_PACKAGE_GENERATED',
+    target_entity: 'PrintPackage',
+    target_id: newPkg.id,
+    summary: `Generated print package for ${req?.request_id || requestId}`,
+    created_at: now
+  });
+
+  saveLocalDb(db);
+  return {
+    success: true,
+    package: newPkg
+  };
+}
+
 // ----------------------------------------------------
 // CUSTOMER QUERIES
 // ----------------------------------------------------
